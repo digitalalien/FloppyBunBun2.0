@@ -7,9 +7,14 @@ public class GameControlScript : MonoBehaviour {
 	public TreeSpawnScript treeSpawner;
 	public GUIText scoreText;
 	public GameObject gameOverText; 
+	private int previousScore;
 
-	int score = 0;
+	public static int score = 0;
 	bool isGameOver = false;
+
+	void Start(){
+		previousScore = 0;
+	}
 
 	void Awake()
 	{
@@ -26,10 +31,10 @@ public class GameControlScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		//if the game is over and the user presses something
-		if (isGameOver && Input.anyKey) {
+		//if (isGameOver && Input.anyKey) {
 			//start a new game
-			Application.LoadLevel(Application.loadedLevel);
-		}
+		//	Application.LoadLevel(Application.loadedLevel);
+		//}
 	}
 
 	public void BunBunScored()
@@ -48,10 +53,13 @@ public class GameControlScript : MonoBehaviour {
 	{
 		//stop spawning trees
 		treeSpawner.StopSpawn ();
-		//show game over
-		gameOverText.SetActive (true);
+		//Unlock GameOver Acheivement
+
 		//set game to be over
 		isGameOver = true;
+
+		//show Game Over scene
+		Application.LoadLevel ("GameOver");
 	}
 
 }

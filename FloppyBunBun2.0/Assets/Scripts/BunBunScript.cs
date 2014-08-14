@@ -5,6 +5,7 @@ public class BunBunScript : MonoBehaviour {
 
 	public float upForce; //upward force of flapping
 	public float forwardSpeed;
+	public AudioClip jumpSound;
 	public bool isDead = false;
 
 	Animator anim;
@@ -45,7 +46,7 @@ public class BunBunScript : MonoBehaviour {
 		//if bunbun hits something set to dead
 		isDead = true;
 		anim.SetTrigger ("Die");
-		//GameControlScript.current.BirdDied ();
+		GameControlScript.current.BunBunDied ();
 	}
 }
 
