@@ -30,11 +30,26 @@ public class GameControlScript : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		//if the game is over and the user presses something
-		//if (isGameOver && Input.anyKey) {
-			//start a new game
-		//	Application.LoadLevel(Application.loadedLevel);
-		//}
+		if (score >= 1000) {
+			#if UNITY_ANDROID			
+			SocialManager.UnlockAchievement("CgkIs6X734cSEAIQBQ");
+			#endif
+		}
+		else if (score >= 250) {
+			#if UNITY_ANDROID			
+			SocialManager.UnlockAchievement("CgkIs6X734cSEAIQBA");
+			#endif
+		}
+		else if (score >= 100) {
+			#if UNITY_ANDROID			
+			SocialManager.UnlockAchievement("CgkIs6X734cSEAIQAw");
+			#endif
+		}
+		else if (score >= 10) {
+			#if UNITY_ANDROID			
+			SocialManager.UnlockAchievement("CgkIs6X734cSEAIQAg");
+			#endif
+		}
 	}
 
 	public void BunBunScored()
@@ -54,7 +69,11 @@ public class GameControlScript : MonoBehaviour {
 		//stop spawning trees
 		treeSpawner.StopSpawn ();
 		//Unlock GameOver Acheivement
-
+		#if UNITY_ANDROID
+			SocialManager.UnlockAchievement("CgkIs6X734cSEAIQAQ");
+		//#elif UNITY_IPHONE
+		//	SocialManager.UnlockAchievement();
+		#endif
 		//set game to be over
 		isGameOver = true;
 

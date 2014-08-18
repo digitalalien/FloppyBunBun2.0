@@ -5,8 +5,9 @@ public class BunBunScript : MonoBehaviour {
 
 	public float upForce; //upward force of flapping
 	public float forwardSpeed;
-	public AudioClip jumpSound;
+	public AudioClip flapSound;
 	public bool isDead = false;
+	private Vector2 bunbunPosition;
 
 	Animator anim;
 	bool flap = false;
@@ -29,6 +30,14 @@ public class BunBunScript : MonoBehaviour {
 		if (Input.anyKeyDown) {
 			flap = true;
 		}
+
+		//Determin where the bunny is in relation to the screen and if off screen out of bounds
+		bunbunPosition = Camera.main.WorldToScreenPoint (transform.position);
+		if (bunbunPosition.y > Screen.height || bunbunPosition.y < 0) {
+			isDead = true;
+			anim.SetTrigger ("Die");
+			GameControlScript.current.BunBunDied ();
+		}
 	}
 
 	void FixedUpdate(){
@@ -36,6 +45,7 @@ public class BunBunScript : MonoBehaviour {
 		if (flap) {
 			flap = false;
 			anim.SetTrigger("Flap");
+			AudioSource.PlayClipAtPoint(flapSound, new Vector3(0,0,0), 1.0f);
 			rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 0);
 			rigidbody2D.AddForce(new Vector2(0, upForce));
 		}
