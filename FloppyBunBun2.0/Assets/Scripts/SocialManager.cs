@@ -6,6 +6,8 @@ using System.Collections.Generic;
 
 public class SocialManager {
 
+	private static bool mWaitingForAuth = false;
+
 	#if UNITY_ANDROID
 		public static string leaderboardId = "CgkIs6X734cSEAIQBg";
 	#else
@@ -16,7 +18,7 @@ public class SocialManager {
 
 	public static bool IsAuthenticated{
 		get {
-			return Social.Active.localUser.authenticated;
+			return Social.localUser.authenticated;
 		}
 	}
 
@@ -26,11 +28,14 @@ public class SocialManager {
 		}
 
 		//If Android Activate Google Play service
-		if (Application.platform == RuntimePlatform.Android) {
-			PlayGamesPlatform.Activate();
-		}
+		//if (Application.platform == RuntimePlatform.Android) {
+			GooglePlayGames.PlayGamesPlatform.Activate();
+		//}
 
-		Social.localUser.Authenticate ((bool success) => {
+		// Authenticate
+		mWaitingForAuth = true;
+		Social.localUser.Authenticate((bool success) => {
+			mWaitingForAuth = false;
 			if(success){
 				//Authentication Successful
 				PlayerPrefs.SetInt("use_game_services", 1);

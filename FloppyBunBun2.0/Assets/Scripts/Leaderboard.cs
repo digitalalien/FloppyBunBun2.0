@@ -3,9 +3,24 @@ using System.Collections;
 
 public class Leaderboard : MonoBehaviour {
 
+	private bool mWaitingForAuth = false;
+
 	void Update(){
 		if (isTouched ()) {
-			SocialManager.ShowLeaderboardUI();		
+			GooglePlayGames.PlayGamesPlatform.Activate();
+			if (!Social.localUser.authenticated) {
+				// Authenticate
+				mWaitingForAuth = true;
+				//InteractiveConsole.print "Authenticating...";
+				Social.localUser.Authenticate((bool success) => {
+					mWaitingForAuth = false;
+					//mStatusText = success ? "Successfully authenticated" : "Authentication failed.";
+				});
+			} else {
+				// Sign out!
+				//mStatusText = "Signing out.";
+				((GooglePlayGames.PlayGamesPlatform) Social.Active).SignOut();
+			}
 		}
 	}
 
